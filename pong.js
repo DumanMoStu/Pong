@@ -50,6 +50,11 @@ function startCountdown() {
         } else {
             countdownDisplay.textContent = "GO!";
             gameStarted = true;
+            score1Display.style.display = "block";
+            score2Display.style.display = "block";
+            
+            document.querySelector("#freeplay-banner").style.display =
+                scoreLimit === 0 ? "block" : "none";
             settingsButton.textContent = "MENU";
             resetBall();
             playerMenus.forEach(menu => {
@@ -111,6 +116,10 @@ let matchOver = false;
 menuButton.addEventListener("click", () => {
     gameStarted = false;
     settingsButton.textContent = "FREEPLAY";
+    document.querySelector("#freeplay-banner").style.display = "none";
+    score1Display.style.display = "none";
+    score2Display.style.display = "none";
+    
     matchOver = false;
     scores = [0, 0];
 
@@ -147,6 +156,9 @@ settingsButton.addEventListener("click", () => {
 matchButtons.forEach(button => {
     button.addEventListener("click", () => {
         scoreLimit = Number(button.dataset.score);
+        const freeplayBanner = document.querySelector("#freeplay-banner");
+
+        freeplayBanner.style.display = scoreLimit === 0 ? "block" : "none";
 
         scores = [0, 0];
         score1Display.textContent = "0";
@@ -264,6 +276,8 @@ let ballSpeedY = Math.random() < 0.5 ? 3 : -3;
 function resetBall() {
     ballX = window.innerWidth / 2;
     ballY = window.innerHeight / 2;
+
+    checkMatchWinner();
     if (matchOver) return;
 
     const speed = Math.min(
