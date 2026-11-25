@@ -193,7 +193,7 @@ function resetBall() {
     ballY = window.innerHeight / 2;
 
     const speed = Math.min(
-        Math.max(nextBallSpeed * 0.75, Math.hypot(3, 3)),
+        Math.max(nextBallSpeed * 0.50, Math.hypot(3, 3)),
         Math.hypot(3, 3) * Math.pow(1.10, 25)
     );
 
