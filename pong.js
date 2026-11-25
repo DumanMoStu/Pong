@@ -50,6 +50,7 @@ function startCountdown() {
         } else {
             countdownDisplay.textContent = "GO!";
             gameStarted = true;
+            settingsButton.textContent = "MENU";
             resetBall();
             playerMenus.forEach(menu => {
             menu.style.display = "none";
@@ -93,6 +94,68 @@ colorButtons.forEach((button, index) => {
     button.addEventListener("click", () => {
         playerMenus[index].style.display = "none";
         colorMenus[index].style.display = "flex";
+    });
+});
+
+//settings
+const settingsButton = document.querySelector("#settings-button");
+const menuButton = document.querySelector("#menu-button");
+const settingsMenu = document.querySelector("#settings-menu");
+const matchOptions = document.querySelector("#match-options");
+const gameOptions = document.querySelector("#game-options");
+const matchButtons = document.querySelectorAll(".match-button");
+
+let scoreLimit = 0; // 0 means unlimited
+let matchOver = false;
+
+menuButton.addEventListener("click", () => {
+    gameStarted = false;
+    settingsButton.textContent = "FREEPLAY";
+    matchOver = false;
+    scores = [0, 0];
+
+    score1Display.textContent = "0";
+    score2Display.textContent = "0";
+    countdownDisplay.textContent = "";
+
+    playerMenus.forEach(menu => menu.style.display = "flex");
+    colorMenus.forEach(menu => menu.style.display = "none");
+
+    playerReady = [false, false];
+    readyButtons.forEach(button => button.textContent = "NOT READY");
+
+    settingsMenu.style.display = "none";
+});
+
+settingsButton.addEventListener("click", () => {
+    if (!gameStarted) {
+        matchOptions.style.display = "flex";
+        gameOptions.style.display = "none";
+
+        settingsButton.style.display = "none";
+        settingsMenu.style.display = "flex";
+        return;
+    }
+
+    if (settingsButton.textContent === "MENU") {
+        settingsButton.textContent = "ARE YOU SURE?";
+    } else {
+        menuButton.click();
+    }
+});
+
+matchButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        scoreLimit = Number(button.dataset.score);
+
+        scores = [0, 0];
+        score1Display.textContent = "0";
+        score2Display.textContent = "0";
+
+        settingsButton.textContent = button.textContent;
+        settingsMenu.style.display = "none";
+        settingsMenu.style.display = "none";
+        settingsButton.style.display = "block";
     });
 });
 
@@ -178,6 +241,16 @@ document.addEventListener("pointercancel", (event) => {
 });
 // #endregion
 
+//winning
+function checkMatchWinner() {
+    if (scoreLimit > 0 && scores.some(score => score >= scoreLimit)) {
+        matchOver = true;
+
+        const winner = scores[0] >= scoreLimit ? "PLAYER 1 WINS!" : "PLAYER 2 WINS!";
+        countdownDisplay.textContent = winner;
+    }
+}
+
 //ball movement
 let gameStarted = false;
 let ballPaused = false;
@@ -191,6 +264,7 @@ let ballSpeedY = Math.random() < 0.5 ? 3 : -3;
 function resetBall() {
     ballX = window.innerWidth / 2;
     ballY = window.innerHeight / 2;
+    if (matchOver) return;
 
     const speed = Math.min(
         Math.max(nextBallSpeed * 0.50, Math.hypot(3, 3)),
