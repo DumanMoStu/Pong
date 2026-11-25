@@ -1,0 +1,136 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    height: 100dvh;
+}
+
+#game {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    touch-action: none;
+    transform: rotate(180deg);
+}
+
+#player1,
+#player2 {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 50%;
+    color: black;
+    border-top: 4px solid black;
+}
+
+#player1 {
+    transform: rotate(180deg);
+    color: black;
+}
+
+#player1 button {
+    background-color: #24558A;
+    color: black;
+}
+
+#player2 button {
+    background-color: #A52A2A;
+    color: black;
+}
+
+.player-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+button {
+    padding: 12px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 32px;
+    cursor: pointer;
+}
+
+.color-menu {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#countdown {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 60px;
+    font-weight: bold;
+    color: black;
+    z-index: 10;
+}
+
+#playfield {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+}
+
+#score1,
+#score2 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 48px;
+    font-weight: bold;
+    color: black;
+    z-index: 6;
+}
+
+#score1 {
+    top: 10%;
+}
+
+#score2 {
+    bottom: 10%;
+}
+
+#paddle1,
+#paddle2 {
+    position: absolute;
+    width: 25%;
+    height: 12px;
+    background-color: black;
+    border-radius: 6px;
+    z-index: 5;
+    left: 0px;
+}
+
+#paddle1 {
+    bottom: 20px;
+}
+
+#paddle2 {
+    top: 20px;
+}
+
+#ball {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-color: black;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+}
