@@ -134,3 +134,42 @@ button {
     transform: translate(-50%, -50%);
     z-index: 5;
 }
+
+#settings {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+}
+
+#settings-button {
+    writing-mode: vertical-rl;
+    border-radius: 12px 0 0 12px;
+    padding: 20px 8px;
+    position: relative;
+    z-index: 1001;
+    pointer-events: auto;
+    color: white;
+    background-color:black
+}
+
+#settings-menu {
+    right: 100%;
+    display: none;
+}
+
+#match-options,
+#game-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 12px 0 0 12px;
+    color: white;
+    background-color: black;
+}
+
+#match-options h3 {
+    text-align: center;
+    width: 100%;
+}
