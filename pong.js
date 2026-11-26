@@ -18,6 +18,7 @@ const ball = document.querySelector("#ball");
 
 //ready counters
 let playerReady = [false, false];
+let rematchReady = [false, false];
 
 const countdownDisplay = document.querySelector("#countdown");
 
@@ -115,6 +116,7 @@ let matchOver = false;
 
 menuButton.addEventListener("click", () => {
     gameStarted = false;
+    document.querySelector("#rematch").style.display = "none";
     settingsButton.textContent = "FREEPLAY";
     document.querySelector("#freeplay-banner").style.display = "none";
     score1Display.style.display = "none";
@@ -212,6 +214,35 @@ backButtons.forEach((button, index) => {
     });
 });
 
+document.querySelectorAll(".rematch-ready").forEach((button, index) => {
+    button.addEventListener("click", () => {
+        rematchReady[index] = true;
+        button.textContent = "READY!";
+        if (rematchReady[0] && rematchReady[1]) {
+            rematchReady = [false, false];
+
+            document.querySelectorAll(".rematch-ready").forEach(button => {
+                button.textContent = "READY";
+            });
+        
+            scores = [0, 0];
+            score1Display.textContent = "0";
+            score2Display.textContent = "0";
+        
+            matchOver = false;
+            document.querySelector("#rematch").style.display = "none";
+        
+            startCountdown();
+        }
+    });
+});
+
+document.querySelectorAll(".rematch-back").forEach(button => {
+    button.addEventListener("click", () => {
+        menuButton.click();
+    });
+});
+
 //gameplay
 
 //paddle movement
@@ -257,9 +288,15 @@ document.addEventListener("pointercancel", (event) => {
 function checkMatchWinner() {
     if (scoreLimit > 0 && scores.some(score => score >= scoreLimit)) {
         matchOver = true;
+        document.querySelector("#rematch").style.display = "block";
 
-        const winner = scores[0] >= scoreLimit ? "PLAYER 1 WINS!" : "PLAYER 2 WINS!";
-        countdownDisplay.textContent = winner;
+        const player1Won = scores[1] >= scoreLimit;
+
+        countdownDisplay.textContent = player1Won
+            ? "PLAYER 1 WINS!"
+            : "PLAYER 2 WINS!";
+
+        countdownDisplay.classList.toggle("player1-wins", player1Won);
     }
 }
 
@@ -305,6 +342,10 @@ function moveBall() {
     if (ballPaused) {
         requestAnimationFrame(moveBall);
         return;
+    }
+
+    if (matchOver) {
+        gameStarted = false;
     }
 
     const previousBallX = ballX;
